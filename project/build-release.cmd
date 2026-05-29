@@ -8,8 +8,7 @@ set "OUTPUT_DLL=%SCRIPT_DIR%bin\release\sim-char-anim-nathan-arm-wave.dll"
 set "DEPLOY_DIR=C:\N8RO\userPlugins\sim"
 set "DEPLOY_DLL=%DEPLOY_DIR%\sim-char-anim-nathan-arm-wave.dll"
 
-REM The Codex host can provide both PATH and Path. MSBuild/CL fails when both
-REM reach ToolTask, so normalize to a single Path variable before vcvars runs.
+REM Normalize to a single Path variable before vcvars runs.
 set "ORIGINAL_PATH=%Path%"
 set "PATH="
 set "Path=%ORIGINAL_PATH%"
