@@ -2,7 +2,7 @@
 
 ## Project
 
-Human Motion: Arm Character Animation
+Human Motion: Greeting Animation
 
 Student:
 
@@ -11,7 +11,7 @@ Abdibasid Hashi
 ID: 210201993
 ```
 
-This project follows this 
+This project follows the simplified N8RO scope that was given for the assignment:
 
 - closed-library model
 - 10 joint angles
@@ -22,16 +22,47 @@ This project follows this
 - integrated into N8RO
 - verified through the GLB viewer
 
-This submission contains a procedural NathanHuman arm-wave animation plugin for N8RO. The motion is registered as:
+I made a procedural greeting animation for the NathanHuman character in N8RO. The animation is registered as:
 
 ```text
 Arm Wave
 ```
 
-The animation follows this state flow:
+The motion is made from these right-arm keyframes:
 
 ```text
-Idle -> Raise Arm -> Wrist Wave -> Lower Arm -> Idle
+Frame 1:   T-pose, all right arm rotations 0
+Frame 20:  Right shoulder Y = -40
+Frame 40:  Right shoulder X = -35, Y = -55, right elbow Z = -95
+Frame 60:  Right wrist Y = 105, palm faces forward
+Frame 66:  Right wrist Y = 115, Z = 45
+Frame 72:  Right wrist Y = 95, Z = -45
+Frame 78:  Right wrist Y = 115, Z = 45
+Frame 84:  Right wrist Y = 95, Z = -45
+Frame 90:  Right wrist Y = 115, Z = 45
+Frame 110: Right arm returns to 0
+```
+
+The motion starts from a T-pose. The right shoulder moves forward, the right elbow bends, the palm turns forward, and the wrist makes a clear hi/bye wave. I also added bigger body movement so the animation is easier to see: the left arm moves for balance and the legs make a small jump/bounce during the greeting.
+
+## Submission Files
+
+GitHub repo:
+
+```text
+https://github.com/abdibasid-DB/character_-arm-wave
+```
+
+Compiled DLL:
+
+```text
+character_plugin_210201993.dll
+```
+
+Screen recording:
+
+```text
+video\arm_wave_demo_210201993.mp4
 ```
 
 ## Build
@@ -48,7 +79,7 @@ Run:
 build-release.cmd
 ```
 
-This builds the plugin in `Release | x64` and deploys it automatically.
+This builds the plugin in `Release | x64` and copies it to the user plugin folder.
 
 ## Output DLL
 
@@ -106,15 +137,16 @@ Motion A:
 Arm Wave
 ```
 
-The current implementation focuses on one complete motion: a natural arm-wave sequence.
+This implementation focuses on one complete greeting motion.
 
 ## Joint / Control Approach
 
-The plugin outputs exactly 10 joint overrides:
+The plugin outputs 10 joint angle overrides. If a right wrist or hand joint is available, I use it for the wave. If it is not available, the plugin still keeps 10 joints by using the other lower-body joint:
 
 ```text
 rightShoulder
 rightElbow
+rightWrist/rightHand if available
 leftShoulder
 leftElbow
 rightHip
@@ -122,11 +154,11 @@ leftHip
 rightKnee
 leftKnee
 rightAnkle
-leftAnkle
+leftAnkle if no wrist/hand joint is available
 ```
 
-The right shoulder raises and holds the arm. The right elbow bends the arm and acts as the closest available forearm/wrist proxy for the small bye-bye wave, because this NathanHuman skeleton does not expose a separate wrist or hand joint. The left arm is explicitly held in a relaxed down pose. The hip, knee, and ankle joints provide small balance support when the right arm is raised.
+The character starts in a T-pose with the right arm rotations at zero. The right shoulder turns forward, the elbow bends strongly, and the wrist turns so the palm faces forward. The right hand wave is larger now, using wrist Y and wrist Z changes so it is easier to see. I also added a bigger full-body action: the left arm swings for balance and the legs make a noticeable jump/bounce using the hips, knees, and ankles. At the end, the right arm returns to zero.
 
-This N8RO plugin uses joint-angle overrides through `IAnimationModel`, which matches the newer simplified email scope: joint angles only, integrated into N8RO, verified in the GLB viewer.
+The plugin uses joint-angle overrides through `IAnimationModel`. The movement is kinematic. I am not applying forces or torques. I used smooth interpolation between the keyframes so the motion does not snap from one pose to another.
 
-The older integration PDF described a larger APP `ICharacterController` project with PD/RBD physics. The later teacher emails narrowed the deadline scope, so this submission follows the newer N8RO kinematic scope.
+The older PDF had a bigger controller setup with physics, but the newer instructions were smaller. For that reason, this version uses the N8RO kinematic animation plugin approach.

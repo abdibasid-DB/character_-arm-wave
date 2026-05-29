@@ -2,7 +2,7 @@
 
 ## Scope Used
 
-This project follows the latest simplified N8RO instructions from the teacher:
+This project follows the simplified N8RO instructions for the assignment:
 
 ```text
 Build a closed-library model that determines 10 joint angles.
@@ -14,25 +14,35 @@ Integrate into N8RO.
 Verify motion through the GLB viewer.
 ```
 
-The older PDF integration spec described a fuller APP controller with quaternion outputs, PD/RBD physics, hotkeys, locomotion, and mission goals. The later emails narrowed the current deadline scope, so this design targets the N8RO kinematic plugin path.
+The older PDF described a larger controller project with physics and more features. The later instructions were more focused, so I used the N8RO animation plugin path for this submission.
 
 ## Animation Goal
 
-The goal is a natural bye-bye arm wave:
+The goal is to make a clear human greeting wave using right-arm X/Y/Z keyframes:
 
 ```text
-Idle -> Raise Arm -> Wrist Wave -> Lower Arm -> Idle
+f001: shoulder 0/0/0, elbow 0/0/0, wrist 0/0/0
+f020: shoulder 0/-40/0, elbow 0/0/0, wrist 0/0/0
+f040: shoulder -35/-55/8, elbow 0/0/-95, wrist 0/0/0
+f060: shoulder -35/-55/8, elbow 0/0/-95, wrist 0/105/0
+f066: wrist Y 115, Z 45
+f072: wrist Y 95, Z -45
+f078: wrist Y 115, Z 45
+f084: wrist Y 95, Z -45
+f090: wrist Y 115, Z 45
+f110: all right arm rotations back to 0
 ```
 
-The character should not remain in a T-pose. Both arms are explicitly posed down in the idle state before the right arm moves.
+The character starts from a T-pose. The right shoulder rotates forward, the elbow bends strongly, the palm faces forward, and the wrist does the hi/bye wave. I also added a bigger full-body action: the left arm swings and the lower body makes a noticeable jump/bounce.
 
 ## Ten-Joint Output
 
-The plugin writes these 10 joints every evaluation:
+The plugin writes 10 joint overrides each frame:
 
 ```text
 rightShoulder
 rightElbow
+rightWrist/rightHand if available
 leftShoulder
 leftElbow
 rightHip
@@ -40,52 +50,43 @@ leftHip
 rightKnee
 leftKnee
 rightAnkle
-leftAnkle
+leftAnkle if no wrist/hand joint is available
 ```
 
 ## Motion Roles
 
-`rightShoulder` raises and holds the arm.
+`rightShoulder` starts in the T-pose, turns the arm forward, stays mostly steady during the wave, and then lowers back to rest.
 
-`rightElbow` bends the arm and performs the small waving motion. This is used as the forearm/wrist proxy because the current NathanHuman skeleton metadata exposes no wrist or hand joint.
+`rightElbow` bends so the forearm comes up near the head or shoulder. During the wave it only moves a little, because the wave should mainly come from the hand.
 
-`leftShoulder` and `leftElbow` hold the left arm relaxed down beside the torso.
+`rightWrist` or `rightHand` is used for the main wave when the skeleton provides that joint. If it is not available, the right elbow/forearm is used as a backup.
 
-`rightHip`, `leftHip`, `rightKnee`, `leftKnee`, `rightAnkle`, and `leftAnkle` add subtle balance support so the 10-joint output is purposeful.
+`leftShoulder` and `leftElbow` add the opposite arm movement so the animation has more action and does not look frozen.
 
-## Current Angle Summary
+The hip, knee, and ankle joints make a noticeable jump/bounce while the arm greeting is happening.
 
-Idle:
+## Movement Details
 
-```text
-Right shoulder: X 72, Y 0, Z 95
-Right elbow:    X 18, Y 0, Z 6
-Left shoulder:  X 72, Y 0, Z -95
-Left elbow:     X 18, Y 0, Z -6
-```
-
-Raised:
+The right arm does the main greeting:
 
 ```text
-Right shoulder: X 58, Y 8, Z 58
-Right elbow:    X 108, Y 0, Z 18
+shoulder opens forward
+elbow folds down and brings the forearm up
+wrist turns the palm forward
+wrist moves left and right for the wave
 ```
 
-Wave:
+The rest of the body supports the motion:
 
 ```text
-Right shoulder: fixed at X 58, Y 8, Z 58
-Right elbow:    X 108, Y 0, Z 18 +/- 10
+left shoulder and left elbow swing as the opposite arm
+hips move slightly during the bounce
+knees bend during the jump/bounce
+ankles help the feet follow the bounce
 ```
 
-Balance support:
-
-```text
-Hips:   X +1.5 deg, Y +/-1.0 deg
-Knees:  X +1.0 deg
-Ankles: X -0.6 deg
-```
+I used smooth interpolation between the frame values. This makes the arm raise, wave, and lower without hard snapping.
 
 ## Limitations
 
-This is a N8RO `IAnimationModel` plugin using Euler angle joint overrides. It is intentionally kinematic and does not implement forces, torques, full rigid-body dynamics, or contact physics.
+This is a N8RO `IAnimationModel` plugin using Euler angle joint overrides. It is kinematic only, so it does not use forces, torques, full rigid-body dynamics, or contact physics.

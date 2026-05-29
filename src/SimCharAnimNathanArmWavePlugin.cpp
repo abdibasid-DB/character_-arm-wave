@@ -13,6 +13,7 @@
 
 #include <cmath>
 #include <initializer_list>
+#include <iterator>
 #include <string>
 #include <string_view>
 #include <unordered_set>
@@ -23,42 +24,78 @@ namespace {
 static constexpr double kPi = 3.14159265358979323846;
 static constexpr double kDeg2Rad = kPi / 180.0;
 
-static constexpr double kCyclePeriod = 8.0;
-static constexpr double kIdleEnd = 1.5;
-static constexpr double kRaiseEnd = 3.0;
-static constexpr double kWristWaveEnd = 6.0;
-static constexpr double kReturnEnd = 8.0;
+static constexpr double kFramesPerSecond = 30.0;
+static constexpr double kCycleFrames = 110.0;
+static constexpr double kCyclePeriod = kCycleFrames / kFramesPerSecond;
 
-static constexpr double kRightShoulderRestX = 72.0 * kDeg2Rad;
-static constexpr double kRightShoulderRestY = 0.0;
-static constexpr double kRightShoulderRestZ = 95.0 * kDeg2Rad;
-static constexpr double kRightElbowRestX = 18.0 * kDeg2Rad;
-static constexpr double kRightElbowRestY = 0.0;
-static constexpr double kRightElbowRestZ = 6.0 * kDeg2Rad;
+static constexpr double kRightShoulderTposeX = 0.0;
+static constexpr double kRightShoulderTposeY = 0.0;
+static constexpr double kRightShoulderTposeZ = 0.0;
+static constexpr double kRightElbowTposeX = 0.0;
+static constexpr double kRightElbowTposeY = 0.0;
+static constexpr double kRightElbowTposeZ = 0.0;
 
-static constexpr double kLeftShoulderRestX = 72.0 * kDeg2Rad;
-static constexpr double kLeftShoulderRestY = 0.0;
-static constexpr double kLeftShoulderRestZ = -95.0 * kDeg2Rad;
-static constexpr double kLeftElbowRestX = 18.0 * kDeg2Rad;
-static constexpr double kLeftElbowRestY = 0.0;
-static constexpr double kLeftElbowRestZ = -6.0 * kDeg2Rad;
+static constexpr double kRightShoulderOpenX = 0.0;
+static constexpr double kRightShoulderOpenY = -40.0 * kDeg2Rad;
+static constexpr double kRightShoulderOpenZ = 0.0;
 
-static constexpr double kRightShoulderRaisedX = 58.0 * kDeg2Rad;
-static constexpr double kRightShoulderRaisedY = 8.0 * kDeg2Rad;
-static constexpr double kRightShoulderRaisedZ = 58.0 * kDeg2Rad;
-static constexpr double kRightElbowRaisedX = 108.0 * kDeg2Rad;
+static constexpr double kRightWristPalmUpX = 0.0;
+static constexpr double kRightWristPalmUpY = -45.0 * kDeg2Rad;
+static constexpr double kRightWristPalmUpZ = 0.0;
+
+static constexpr double kRightShoulderRaisedX = -35.0 * kDeg2Rad;
+static constexpr double kRightShoulderRaisedY = -55.0 * kDeg2Rad;
+static constexpr double kRightShoulderRaisedZ = 8.0 * kDeg2Rad;
+static constexpr double kRightElbowRaisedX = 0.0;
 static constexpr double kRightElbowRaisedY = 0.0;
-static constexpr double kRightElbowRaisedZ = 18.0 * kDeg2Rad;
+static constexpr double kRightElbowRaisedZ = -95.0 * kDeg2Rad;
+static constexpr double kRightWristForwardX = 0.0;
+static constexpr double kRightWristForwardY = 105.0 * kDeg2Rad;
+static constexpr double kRightWristForwardZ = 0.0;
 
-static constexpr double kRightShoulderFoldX = 70.0 * kDeg2Rad;
-static constexpr double kRightShoulderFoldY = 4.0 * kDeg2Rad;
-static constexpr double kRightShoulderFoldZ = 82.0 * kDeg2Rad;
-static constexpr double kRightElbowFoldX = 72.0 * kDeg2Rad;
-static constexpr double kRightElbowFoldY = 0.0;
-static constexpr double kRightElbowFoldZ = 10.0 * kDeg2Rad;
+static constexpr double kRightWristWaveLeftZ = 45.0 * kDeg2Rad;
+static constexpr double kRightWristWaveRightZ = -45.0 * kDeg2Rad;
 
-static constexpr double kForearmWaveAmplitudeZ = 10.0 * kDeg2Rad;
-static constexpr double kWaveFrequency = 6.0;
+static constexpr double kLeftShoulderTposeX = 0.0;
+static constexpr double kLeftShoulderTposeY = 0.0;
+static constexpr double kLeftShoulderTposeZ = 0.0;
+static constexpr double kLeftElbowTposeX = 0.0;
+static constexpr double kLeftElbowTposeY = 0.0;
+static constexpr double kLeftElbowTposeZ = 0.0;
+
+static constexpr double kRightShoulderRelaxedX = 0.0;
+static constexpr double kRightShoulderRelaxedY = 0.0;
+static constexpr double kRightShoulderRelaxedZ = 0.0;
+static constexpr double kRightElbowRelaxedX = 0.0;
+static constexpr double kRightElbowRelaxedY = 0.0;
+static constexpr double kRightElbowRelaxedZ = 0.0;
+
+static constexpr double kLeftShoulderRelaxedX = 0.0;
+static constexpr double kLeftShoulderRelaxedY = 0.0;
+static constexpr double kLeftShoulderRelaxedZ = 0.0;
+static constexpr double kLeftElbowRelaxedX = 0.0;
+static constexpr double kLeftElbowRelaxedY = 0.0;
+static constexpr double kLeftElbowRelaxedZ = 0.0;
+
+static constexpr double kLeftShoulderSwingAmplitudeX = 24.0 * kDeg2Rad;
+static constexpr double kLeftShoulderSwingAmplitudeY = 10.0 * kDeg2Rad;
+static constexpr double kLeftShoulderSwingAmplitudeZ = -35.0 * kDeg2Rad;
+static constexpr double kLeftElbowSwingAmplitudeX = 28.0 * kDeg2Rad;
+static constexpr double kLeftElbowSwingAmplitudeZ = -14.0 * kDeg2Rad;
+
+static constexpr double kRightShoulderRestX = kRightShoulderRelaxedX;
+static constexpr double kRightShoulderRestY = kRightShoulderRelaxedY;
+static constexpr double kRightShoulderRestZ = kRightShoulderRelaxedZ;
+static constexpr double kRightElbowRestX = kRightElbowRelaxedX;
+static constexpr double kRightElbowRestY = 0.0;
+static constexpr double kRightElbowRestZ = kRightElbowRelaxedZ;
+
+static constexpr double kLeftShoulderRestX = kLeftShoulderRelaxedX;
+static constexpr double kLeftShoulderRestY = kLeftShoulderRelaxedY;
+static constexpr double kLeftShoulderRestZ = kLeftShoulderRelaxedZ;
+static constexpr double kLeftElbowRestX = kLeftElbowRelaxedX;
+static constexpr double kLeftElbowRestY = kLeftElbowRelaxedY;
+static constexpr double kLeftElbowRestZ = kLeftElbowRelaxedZ;
 
 static constexpr double kHipRestX = 0.0;
 static constexpr double kHipRestY = 0.0;
@@ -69,16 +106,37 @@ static constexpr double kHipBalanceY = 1.0 * kDeg2Rad;
 static constexpr double kKneeBalanceX = 1.0 * kDeg2Rad;
 static constexpr double kAnkleBalanceX = -0.6 * kDeg2Rad;
 
-enum class ArmWaveState {
-    Idle,
-    RaiseArm,
-    WristWave,
-    FoldArmAndReturn
+struct ArmPose {
+    double frame;
+    double shoulderX;
+    double shoulderY;
+    double shoulderZ;
+    double elbowX;
+    double elbowY;
+    double elbowZ;
+    double wristX;
+    double wristY;
+    double wristZ;
+};
+
+static constexpr ArmPose kRightArmKeyframes[] = {
+    {1.0, kRightShoulderTposeX, kRightShoulderTposeY, kRightShoulderTposeZ, kRightElbowTposeX, kRightElbowTposeY, kRightElbowTposeZ, 0.0, 0.0, 0.0},
+    {20.0, kRightShoulderOpenX, kRightShoulderOpenY, kRightShoulderOpenZ, kRightElbowTposeX, kRightElbowTposeY, kRightElbowTposeZ, 0.0, 0.0, 0.0},
+    {30.0, kRightShoulderOpenX, kRightShoulderOpenY, kRightShoulderOpenZ, kRightElbowTposeX, kRightElbowTposeY, kRightElbowTposeZ, kRightWristPalmUpX, kRightWristPalmUpY, kRightWristPalmUpZ},
+    {40.0, kRightShoulderRaisedX, kRightShoulderRaisedY, kRightShoulderRaisedZ, kRightElbowRaisedX, kRightElbowRaisedY, kRightElbowRaisedZ, 0.0, 0.0, 0.0},
+    {60.0, kRightShoulderRaisedX, kRightShoulderRaisedY, kRightShoulderRaisedZ, kRightElbowRaisedX, kRightElbowRaisedY, kRightElbowRaisedZ, kRightWristForwardX, kRightWristForwardY, kRightWristForwardZ},
+    {66.0, kRightShoulderRaisedX, kRightShoulderRaisedY, kRightShoulderRaisedZ, kRightElbowRaisedX, kRightElbowRaisedY, kRightElbowRaisedZ, kRightWristForwardX, 115.0 * kDeg2Rad, kRightWristWaveLeftZ},
+    {72.0, kRightShoulderRaisedX, kRightShoulderRaisedY, kRightShoulderRaisedZ, kRightElbowRaisedX, kRightElbowRaisedY, kRightElbowRaisedZ, kRightWristForwardX, 95.0 * kDeg2Rad, kRightWristWaveRightZ},
+    {78.0, kRightShoulderRaisedX, kRightShoulderRaisedY, kRightShoulderRaisedZ, kRightElbowRaisedX, kRightElbowRaisedY, kRightElbowRaisedZ, kRightWristForwardX, 115.0 * kDeg2Rad, kRightWristWaveLeftZ},
+    {84.0, kRightShoulderRaisedX, kRightShoulderRaisedY, kRightShoulderRaisedZ, kRightElbowRaisedX, kRightElbowRaisedY, kRightElbowRaisedZ, kRightWristForwardX, 95.0 * kDeg2Rad, kRightWristWaveRightZ},
+    {90.0, kRightShoulderRaisedX, kRightShoulderRaisedY, kRightShoulderRaisedZ, kRightElbowRaisedX, kRightElbowRaisedY, kRightElbowRaisedZ, kRightWristForwardX, 115.0 * kDeg2Rad, kRightWristWaveLeftZ},
+    {110.0, kRightShoulderRelaxedX, kRightShoulderRelaxedY, kRightShoulderRelaxedZ, kRightElbowRelaxedX, kRightElbowRelaxedY, kRightElbowRelaxedZ, 0.0, 0.0, 0.0},
 };
 
 struct ResolvedJointSet {
     std::string rightShoulder = "rightShoulder";
     std::string rightElbow = "rightElbow";
+    std::string rightWrist;
     std::string leftShoulder = "leftShoulder";
     std::string leftElbow = "leftElbow";
     std::string rightHip = "rightHip";
@@ -109,17 +167,9 @@ struct ResolvedJointSet {
     return u * u * (3.0 - (2.0 * u));
 }
 
-[[nodiscard]] ArmWaveState resolveState(double cycle) noexcept {
-    if (cycle < kIdleEnd) {
-        return ArmWaveState::Idle;
-    }
-    if (cycle < kRaiseEnd) {
-        return ArmWaveState::RaiseArm;
-    }
-    if (cycle < kWristWaveEnd) {
-        return ArmWaveState::WristWave;
-    }
-    return ArmWaveState::FoldArmAndReturn;
+[[nodiscard]] double pulseBetweenFrames(double frame, double startFrame, double endFrame) noexcept {
+    const double progress = clamp01((frame - startFrame) / (endFrame - startFrame));
+    return std::sin(kPi * progress);
 }
 
 [[nodiscard]] std::string resolveJointId(
@@ -140,6 +190,23 @@ struct ResolvedJointSet {
     return std::string(fallback);
 }
 
+[[nodiscard]] std::string resolveOptionalJointId(
+    const std::unordered_set<std::string>& availableJointIds,
+    std::initializer_list<std::string_view> candidates) {
+    if (availableJointIds.empty()) {
+        return {};
+    }
+
+    for (std::string_view candidate : candidates) {
+        const std::string candidateText(candidate);
+        if (availableJointIds.find(candidateText) != availableJointIds.end()) {
+            return candidateText;
+        }
+    }
+
+    return {};
+}
+
 [[nodiscard]] ResolvedJointSet resolveJointSet(
     const arkheon::astsim::AnimationModelInput& input) {
     std::unordered_set<std::string> availableJointIds;
@@ -157,6 +224,9 @@ struct ResolvedJointSet {
         availableJointIds,
         {"rightElbow", "rightForearm", "lowerarm_r"},
         "rightElbow");
+    joints.rightWrist = resolveOptionalJointId(
+        availableJointIds,
+        {"rightWrist", "rightHand", "hand_r", "wrist_r"});
     joints.leftShoulder = resolveJointId(
         availableJointIds,
         {"leftShoulder", "leftUpperArm", "upperarm_l"},
@@ -193,97 +263,90 @@ struct ResolvedJointSet {
     return joints;
 }
 
+[[nodiscard]] ArmPose interpolateRightArmPose(double frame) noexcept {
+    if (frame <= kRightArmKeyframes[0].frame) {
+        return kRightArmKeyframes[0];
+    }
+
+    for (int i = 1; i < static_cast<int>(std::size(kRightArmKeyframes)); ++i) {
+        const ArmPose& previous = kRightArmKeyframes[i - 1];
+        const ArmPose& next = kRightArmKeyframes[i];
+        if (frame <= next.frame) {
+            const double progress = smoothstep((frame - previous.frame) / (next.frame - previous.frame));
+            return {
+                frame,
+                lerp(previous.shoulderX, next.shoulderX, progress),
+                lerp(previous.shoulderY, next.shoulderY, progress),
+                lerp(previous.shoulderZ, next.shoulderZ, progress),
+                lerp(previous.elbowX, next.elbowX, progress),
+                lerp(previous.elbowY, next.elbowY, progress),
+                lerp(previous.elbowZ, next.elbowZ, progress),
+                lerp(previous.wristX, next.wristX, progress),
+                lerp(previous.wristY, next.wristY, progress),
+                lerp(previous.wristZ, next.wristZ, progress),
+            };
+        }
+    }
+
+    return kRightArmKeyframes[std::size(kRightArmKeyframes) - 1];
+}
+
 [[nodiscard]] bool evaluateArmWaveAnimation(
     const arkheon::astsim::AnimationModelInput& input,
     arkheon::astsim::AnimationModelOutput& output) {
     static_cast<void>(input.deltaTimeSeconds);
 
     const double cycle = std::fmod(input.simulationTimeSeconds, kCyclePeriod);
-    const ArmWaveState state = resolveState(cycle);
+    const double cycleFrame = 1.0 + std::fmod(cycle * kFramesPerSecond, kCycleFrames);
+    const ArmPose rightArmPose = interpolateRightArmPose(cycleFrame);
     const ResolvedJointSet joints = resolveJointSet(input);
 
-    double rightShoulderX = kRightShoulderRestX;
-    double rightShoulderY = kRightShoulderRestY;
-    double rightShoulderZ = kRightShoulderRestZ;
-    double rightElbowX = kRightElbowRestX;
-    double rightElbowY = kRightElbowRestY;
-    double rightElbowZ = kRightElbowRestZ;
-    double balanceProgress = 0.0;
+    const double jumpPulse = pulseBetweenFrames(cycleFrame, 20.0, 100.0);
+    const double wavePulse = pulseBetweenFrames(cycleFrame, 60.0, 90.0);
+    const double excitedSwing = std::sin((cycleFrame - 20.0) * kPi / 12.0) * jumpPulse;
+    const double jumpKneeX = 42.0 * kDeg2Rad * jumpPulse;
+    const double jumpHipX = -16.0 * kDeg2Rad * jumpPulse;
+    const double jumpAnkleX = -22.0 * kDeg2Rad * jumpPulse;
+    const double sideBalanceY = 7.0 * kDeg2Rad * wavePulse;
+    const double bodyBounceX = 6.0 * kDeg2Rad * std::sin((cycleFrame - 20.0) * kPi / 8.0) * jumpPulse;
 
-    switch (state) {
-    case ArmWaveState::Idle:
-        break;
+    const double leftShoulderX = kLeftShoulderRestX + (kLeftShoulderSwingAmplitudeX * jumpPulse);
+    const double leftShoulderY = kLeftShoulderRestY + (kLeftShoulderSwingAmplitudeY * excitedSwing);
+    const double leftShoulderZ = kLeftShoulderRestZ + (kLeftShoulderSwingAmplitudeZ * jumpPulse);
+    const double leftElbowX = kLeftElbowRestX + (kLeftElbowSwingAmplitudeX * jumpPulse);
+    const double leftElbowY = kLeftElbowRestY;
+    const double leftElbowZ = kLeftElbowRestZ + (kLeftElbowSwingAmplitudeZ * excitedSwing);
 
-    case ArmWaveState::RaiseArm: {
-        const double progress = smoothstep((cycle - kIdleEnd) / (kRaiseEnd - kIdleEnd));
-        balanceProgress = progress;
-        rightShoulderX = lerp(kRightShoulderRestX, kRightShoulderRaisedX, progress);
-        rightShoulderY = lerp(kRightShoulderRestY, kRightShoulderRaisedY, progress);
-        rightShoulderZ = lerp(kRightShoulderRestZ, kRightShoulderRaisedZ, progress);
-        rightElbowX = lerp(kRightElbowRestX, kRightElbowRaisedX, progress);
-        rightElbowY = lerp(kRightElbowRestY, kRightElbowRaisedY, progress);
-        rightElbowZ = lerp(kRightElbowRestZ, kRightElbowRaisedZ, progress);
-        break;
-    }
-
-    case ArmWaveState::WristWave: {
-        const double wave = std::sin(kWaveFrequency * (cycle - kRaiseEnd));
-        balanceProgress = 1.0;
-        rightShoulderX = kRightShoulderRaisedX;
-        rightShoulderY = kRightShoulderRaisedY;
-        rightShoulderZ = kRightShoulderRaisedZ;
-        rightElbowX = kRightElbowRaisedX;
-        rightElbowY = kRightElbowRaisedY;
-        rightElbowZ = kRightElbowRaisedZ + (kForearmWaveAmplitudeZ * wave);
-        break;
-    }
-
-    case ArmWaveState::FoldArmAndReturn: {
-        const double returnTime = cycle - kWristWaveEnd;
-        const double foldProgress = smoothstep(returnTime / ((kReturnEnd - kWristWaveEnd) * 0.35));
-        const double lowerProgress = smoothstep((returnTime - ((kReturnEnd - kWristWaveEnd) * 0.35)) / ((kReturnEnd - kWristWaveEnd) * 0.65));
-        balanceProgress = 1.0 - lowerProgress;
-
-        const double foldedShoulderX = lerp(kRightShoulderRaisedX, kRightShoulderFoldX, foldProgress);
-        const double foldedShoulderY = lerp(kRightShoulderRaisedY, kRightShoulderFoldY, foldProgress);
-        const double foldedShoulderZ = lerp(kRightShoulderRaisedZ, kRightShoulderFoldZ, foldProgress);
-        const double foldedElbowX = lerp(kRightElbowRaisedX, kRightElbowFoldX, foldProgress);
-        const double foldedElbowY = lerp(kRightElbowRaisedY, kRightElbowFoldY, foldProgress);
-        const double foldedElbowZ = lerp(kRightElbowRaisedZ, kRightElbowFoldZ, foldProgress);
-
-        rightShoulderX = lerp(foldedShoulderX, kRightShoulderRestX, lowerProgress);
-        rightShoulderY = lerp(foldedShoulderY, kRightShoulderRestY, lowerProgress);
-        rightShoulderZ = lerp(foldedShoulderZ, kRightShoulderRestZ, lowerProgress);
-        rightElbowX = lerp(foldedElbowX, kRightElbowRestX, lowerProgress);
-        rightElbowY = lerp(foldedElbowY, kRightElbowRestY, lowerProgress);
-        rightElbowZ = lerp(foldedElbowZ, kRightElbowRestZ, lowerProgress);
-        break;
-    }
-    }
-
-    const double rightHipX = kHipRestX + (kHipBalanceX * balanceProgress);
-    const double leftHipX = kHipRestX + (kHipBalanceX * balanceProgress);
-    const double rightHipY = kHipRestY - (kHipBalanceY * balanceProgress);
-    const double leftHipY = kHipRestY + (kHipBalanceY * balanceProgress);
-    const double kneeX = kKneeRestX + (kKneeBalanceX * balanceProgress);
-    const double ankleX = kAnkleRestX + (kAnkleBalanceX * balanceProgress);
+    const double rightHipX = kHipRestX + jumpHipX + bodyBounceX;
+    const double leftHipX = kHipRestX + jumpHipX + bodyBounceX;
+    const double rightHipY = kHipRestY - sideBalanceY;
+    const double leftHipY = kHipRestY + sideBalanceY;
+    const double kneeX = kKneeRestX + jumpKneeX;
+    const double ankleX = kAnkleRestX + jumpAnkleX;
 
     output.clearExistingJointOverrides = true;
     output.jointOverrides.clear();
     output.jointOverrides.reserve(10);
 
-    // Four-state natural wave. Nathan has no wrist/hand joint, so rightElbow
-    // is the forearm proxy for the small bye-bye wave while the shoulder holds.
-    output.jointOverrides.push_back({joints.rightShoulder, rightShoulderX, rightShoulderY, rightShoulderZ});
-    output.jointOverrides.push_back({joints.rightElbow, rightElbowX, rightElbowY, rightElbowZ});
-    output.jointOverrides.push_back({joints.leftShoulder, kLeftShoulderRestX, kLeftShoulderRestY, kLeftShoulderRestZ});
-    output.jointOverrides.push_back({joints.leftElbow, kLeftElbowRestX, kLeftElbowRestY, kLeftElbowRestZ});
+    // Right arm follows the requested X/Y/Z keyframes. Legs add a small
+    // jump/bounce so all 10 output joints contribute to the motion.
+    // Use a real wrist/hand joint when available; otherwise the forearm carries
+    // the small hi-wave motion while the shoulder stays stable.
+    output.jointOverrides.push_back({joints.rightShoulder, rightArmPose.shoulderX, rightArmPose.shoulderY, rightArmPose.shoulderZ});
+    output.jointOverrides.push_back({joints.rightElbow, rightArmPose.elbowX, rightArmPose.elbowY, rightArmPose.elbowZ});
+    if (!joints.rightWrist.empty()) {
+        output.jointOverrides.push_back({joints.rightWrist, rightArmPose.wristX, rightArmPose.wristY, rightArmPose.wristZ});
+    }
+    output.jointOverrides.push_back({joints.leftShoulder, leftShoulderX, leftShoulderY, leftShoulderZ});
+    output.jointOverrides.push_back({joints.leftElbow, leftElbowX, leftElbowY, leftElbowZ});
     output.jointOverrides.push_back({joints.rightHip, rightHipX, rightHipY, 0.0});
     output.jointOverrides.push_back({joints.leftHip, leftHipX, leftHipY, 0.0});
     output.jointOverrides.push_back({joints.rightKnee, kneeX, 0.0, 0.0});
     output.jointOverrides.push_back({joints.leftKnee, kneeX, 0.0, 0.0});
     output.jointOverrides.push_back({joints.rightAnkle, ankleX, 0.0, 0.0});
-    output.jointOverrides.push_back({joints.leftAnkle, ankleX, 0.0, 0.0});
+    if (joints.rightWrist.empty()) {
+        output.jointOverrides.push_back({joints.leftAnkle, ankleX, 0.0, 0.0});
+    }
 
     return output.jointOverrides.size() == 10;
 }

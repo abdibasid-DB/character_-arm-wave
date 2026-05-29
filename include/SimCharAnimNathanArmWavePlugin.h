@@ -20,12 +20,9 @@ namespace arkheon::sample::simcharanimnathanarmwave {
 // 10 joint rotation overrides each evaluation frame and never applies forces,
 // torques, rigid-body dynamics, or contact physics.
 //
-// Animation states (8-second cyclic period):
-//   [0.0, 1.5)  Idle      - neutral standing pose.
-//   [1.5, 3.0)  Raise Arm - right shoulder raises smoothly, elbow bends.
-//   [3.0, 6.0)  Wave      - shoulder stays raised; elbow/wrist wave.
-//   [6.0, 7.5)  Lower Arm - arm and posture offsets return smoothly.
-//   [7.5, 8.0)  Idle      - neutral reset before repeating.
+// Animation uses frame-keyed right-arm X/Y/Z rotations:
+//   f001 T-pose, f020 shoulder Y=-25, f040 shoulder X=-20/Y=-35 + elbow Z=-70,
+//   f060 wrist Y=90, f070/080/090 wrist Z=-20/+20/-20, f110 reset.
 class SimCharAnimNathanArmWavePlugin final
     : public arkheon::astlib::IPlugin {
 public:
