@@ -1,4 +1,4 @@
-# Character Animation Submission
+# Character Animation 
 
 ## Project
 
@@ -11,7 +11,7 @@ Abdibasid Hashi
 ID: 210201993
 ```
 
-This submission follows the latest simplified N8RO project scope from the teacher:
+This project follows this 
 
 - closed-library model
 - 10 joint angles
