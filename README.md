@@ -123,4 +123,4 @@ The video should clearly show:
 - Source/project files: included in this repository
 - Final GLB model: `assets\human_model_nathan_walk_stop_fingers_210201993.glb`
 - Public repository: `https://github.com/abdibasid-DB/short-full-body-and-hand-animation-210201993`
-- Video: https://drive.google.com/file/d/1oiD7dW4kdMTdFpXi9c_Gff_2tFqQ-ZcD/view?usp=sharing
+- Video: https://youtu.be/ZV3hCxMXBG0
