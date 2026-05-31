@@ -18,9 +18,9 @@ The selected states are:
 
 The character first walks in place, then stops. After stopping, the arms extend into a clear pose. One arm is forward and one arm is backward. Then the fingers close one by one and open one by one.
 
-## Controlled 10 Joints
+## Selected 10 Hand Joint Controls
 
-The hand motion controls 10 finger joint values:
+The main hand motion controls these 10 finger joint values:
 
 1. Thumb base
 2. Thumb tip
@@ -33,7 +33,23 @@ The hand motion controls 10 finger joint values:
 9. Pinky base
 10. Pinky tip
 
-These joint values are used to show the fingers closing and opening.
+These joint values are used to show the fingers closing and opening one by one.
+
+## Other Body Joints Used In The Animation
+
+The character also uses the existing body skeleton for the normal walking and arm movement:
+
+- Hip
+- Left and right upper legs
+- Left and right lower legs
+- Left and right feet
+- Spine joints
+- Left and right shoulders
+- Left and right upper arms
+- Left and right lower arms
+- Left and right hands
+
+The body joints make the character walk and move the arms. The selected 10 hand controls make the finger motion clear after the character stops.
 
 ## Build
 
