@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Release" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="sim-char-anim-nathan-hand-poses.vcxproj" Id="d9f1a8c0-4ca7-4f4d-a916-210201997001" />
+</Solution>

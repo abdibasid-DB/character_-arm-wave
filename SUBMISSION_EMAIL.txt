@@ -1,0 +1,41 @@
+Subject: Character Animation Project Submission - 210201993
+
+Hello Hocam,
+
+My character animation project submission is ready.
+
+GitHub repository:
+https://github.com/abdibasid-DB/character_-arm-wave
+
+Video link:
+[ADD SCREEN CAPTURE VIDEO LINK HERE]
+
+Brief description:
+My project implements a human motion and hand animation with these states:
+
+1. Walk
+2. Stop
+3. Arms Extended
+4. Fingers Close One by One
+5. Fingers Open One by One
+
+The character first walks, then stops. After stopping, the arms extend into a clear pose with one arm forward and one arm backward. Then the fingers close one by one and open one by one.
+
+The model controls 10 hand/finger joint values:
+
+1. Thumb base
+2. Thumb tip
+3. Index base
+4. Index tip
+5. Middle base
+6. Middle tip
+7. Ring base
+8. Ring tip
+9. Pinky base
+10. Pinky tip
+
+The animation is shown inside the N8RO GLB viewer.
+
+Best regards,
+[STUDENT NAME]
+Student ID: 210201993

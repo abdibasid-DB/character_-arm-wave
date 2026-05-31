@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37216.2
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HandMotionPlugin", "HandMotionPlugin\HandMotionPlugin.vcxproj", "{60BFA543-ECB7-47F6-899E-D9131290BEC3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestApp", "TestApp\TestApp.vcxproj", "{FE132F41-B19F-488D-8D75-A169009F9A61}"
+	ProjectSection(ProjectDependencies) = postProject
+		{60BFA543-ECB7-47F6-899E-D9131290BEC3} = {60BFA543-ECB7-47F6-899E-D9131290BEC3}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60BFA543-ECB7-47F6-899E-D9131290BEC3}.Debug|x64.ActiveCfg = Debug|x64
+		{60BFA543-ECB7-47F6-899E-D9131290BEC3}.Debug|x64.Build.0 = Debug|x64
+		{60BFA543-ECB7-47F6-899E-D9131290BEC3}.Debug|x86.ActiveCfg = Debug|Win32
+		{60BFA543-ECB7-47F6-899E-D9131290BEC3}.Debug|x86.Build.0 = Debug|Win32
+		{60BFA543-ECB7-47F6-899E-D9131290BEC3}.Release|x64.ActiveCfg = Release|x64
+		{60BFA543-ECB7-47F6-899E-D9131290BEC3}.Release|x64.Build.0 = Release|x64
+		{60BFA543-ECB7-47F6-899E-D9131290BEC3}.Release|x86.ActiveCfg = Release|Win32
+		{60BFA543-ECB7-47F6-899E-D9131290BEC3}.Release|x86.Build.0 = Release|Win32
+		{FE132F41-B19F-488D-8D75-A169009F9A61}.Debug|x64.ActiveCfg = Debug|x64
+		{FE132F41-B19F-488D-8D75-A169009F9A61}.Debug|x64.Build.0 = Debug|x64
+		{FE132F41-B19F-488D-8D75-A169009F9A61}.Debug|x86.ActiveCfg = Debug|Win32
+		{FE132F41-B19F-488D-8D75-A169009F9A61}.Debug|x86.Build.0 = Debug|Win32
+		{FE132F41-B19F-488D-8D75-A169009F9A61}.Release|x64.ActiveCfg = Release|x64
+		{FE132F41-B19F-488D-8D75-A169009F9A61}.Release|x64.Build.0 = Release|x64
+		{FE132F41-B19F-488D-8D75-A169009F9A61}.Release|x86.ActiveCfg = Release|Win32
+		{FE132F41-B19F-488D-8D75-A169009F9A61}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {09E5E7D5-1DFF-43A3-A933-0D3EE5C90ECD}
+	EndGlobalSection
+EndGlobal

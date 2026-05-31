@@ -1,0 +1,32 @@
+# Visual Studio generated files
+.vs/
+*.user
+*.suo
+*.VC.db
+*.VC.opendb
+
+# Build intermediates
+**/Debug/
+**/Release/
+**/x64/Debug/
+
+# Keep the submission DLL even though Release outputs are normally ignored
+!x64/
+!x64/Release/
+x64/Release/*
+!x64/Release/character_plugin_210201993.dll
+
+# Temporary files
+*.log
+*.tmp
+
+# Official sim plugin build intermediates
+official-sim-plugin/**/x64/
+official-sim-plugin/**/bin/release/*.exp
+official-sim-plugin/**/bin/release/*.lib
+official-sim-plugin/**/bin/release/*.pdb
+!official-sim-plugin/
+!official-sim-plugin/**/
+!official-sim-plugin/**/bin/
+!official-sim-plugin/**/bin/release/
+!official-sim-plugin/**/bin/release/*.dll

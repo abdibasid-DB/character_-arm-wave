@@ -1,133 +1,96 @@
-# Character Animation
+# Character Plugin 210201993
 
-## Student
+This is an N8RO character animation project.
 
-```text
-Name: Abdibasid Hashi
-ID: 210201993
-```
+Student ID: 210201993
 
-## Project Description
+## Project Idea
 
-This project is a human greeting animation for the NathanHuman character in N8RO.
+The project shows a simple human motion and hand/finger animation in the N8RO GLB viewer.
 
-The character starts in a T-pose. The right arm moves forward, the elbow bends, the palm turns to face forward, and the hand waves like saying hi or bye. The left arm also moves, and the legs make a small jump/bounce so the whole motion is more visible.
+The selected states are:
 
-The animation name inside N8RO is:
+1. Walk
+2. Stop
+3. Arms Extended
+4. Fingers Close One by One
+5. Fingers Open One by One
 
-```text
-Arm Wave
-```
+The character first walks in place, then stops. After stopping, the arms extend into a clear pose. One arm is forward and one arm is backward. Then the fingers close one by one and open one by one.
 
-## Main Motion
+## Controlled 10 Joints
 
-The greeting motion uses these steps:
+The hand motion controls 10 finger joint values:
 
-```text
-1. Start in T-pose
-2. Move the right shoulder forward
-3. Bend the right elbow
-4. Turn the palm forward
-5. Wave using the wrist/hand
-6. Add left arm movement
-7. Add leg bounce/jump
-8. Return back to the starting pose
-```
+1. Thumb base
+2. Thumb tip
+3. Index base
+4. Index tip
+5. Middle base
+6. Middle tip
+7. Ring base
+8. Ring tip
+9. Pinky base
+10. Pinky tip
 
-## Right Arm Keyframes
-
-```text
-Frame 1:   T-pose, all right arm rotations are 0
-Frame 20:  Right shoulder Y = -40
-Frame 40:  Right shoulder X = -35, Y = -55, Z = 8
-           Right elbow Z = -95
-Frame 60:  Right wrist Y = 105
-Frame 66:  Right wrist Y = 115, Z = 45
-Frame 72:  Right wrist Y = 95,  Z = -45
-Frame 78:  Right wrist Y = 115, Z = 45
-Frame 84:  Right wrist Y = 95,  Z = -45
-Frame 90:  Right wrist Y = 115, Z = 45
-Frame 110: Right arm returns to 0
-```
-
-## Joint Control
-
-The plugin uses 10 joint angle outputs.
-
-```text
-rightShoulder
-rightElbow
-rightWrist/rightHand if available
-leftShoulder
-leftElbow
-rightHip
-leftHip
-rightKnee
-leftKnee
-rightAnkle
-leftAnkle if no wrist/hand joint is available
-```
-
-The right shoulder and right elbow create the main arm pose. The wrist/hand makes the wave. The left arm and legs add extra movement so the animation looks more active.
-
-This project uses joint angles only. It does not use forces, torques, or full physics. The motion is made by changing the joint rotations smoothly between keyframes.
+These joint values are used to show the fingers closing and opening.
 
 ## Build
 
-Open this folder:
+Open the solution file in Visual Studio 2022:
 
 ```text
-C:\N8RO\dev\samples\sim\sim-char-anim-nathan-arm-wave
+HandMotionPlugin.sln
 ```
 
-Run:
-
-```bat
-build-release.cmd
-```
-
-The project should be built as:
+Build settings:
 
 ```text
-Release x64
+Configuration: Release
+Platform: x64
 ```
 
-## Install / Load
-
-Copy the plugin DLL to:
+The submitted Release x64 DLL path is:
 
 ```text
-C:\N8RO\userPlugins\sim\
+x64\Release\character_plugin_210201993.dll
 ```
 
-Restart N8RO after copying the DLL.
+Note: this folder keeps the original starter/plugin project structure. The final visible animation for this submission is the GLB model in the `assets` folder.
 
-The plugin loaded by N8RO is:
+## Final GLB Model
+
+The final animated model is:
 
 ```text
-sim-char-anim-nathan-arm-wave.dll
+assets\human_model_nathan_walk_stop_fingers_210201993.glb
 ```
 
-## Submission Files
+## Animation Script
 
-GitHub repo:
-
-```text
-https://github.com/abdibasid-DB/character_-arm-wave
-```
-
-Compiled DLL:
+The script used to generate the GLB animation is:
 
 ```text
-character_plugin_210201993.dll
-```
-
-Demo video:
-
-```text
-video\arm_wave_demo_210201993.mp4
+tools\write_walk_stop_finger_sequence_glb.js
 ```
 
 ## Testing
 
-I built the DLL in Release x64 and loaded it in N8RO. I checked that the Arm Wave animation runs, the right hand waves, the left arm moves, and the legs make the jump/bounce motion.
+Open the final GLB model in the N8RO GLB viewer and record the screen.
+
+The video should clearly show:
+
+- Walk
+- Stop
+- Arms Extended
+- Fingers Close One by One
+- Fingers Open One by One
+
+## Submitted Files
+
+- Source/project files: included in this repository
+- Final GLB model: `assets\human_model_nathan_walk_stop_fingers_210201993.glb`
+- Generation script: `tools\write_walk_stop_finger_sequence_glb.js`
+- Email template: `SUBMISSION_EMAIL.txt`
+- Public repository: `https://github.com/abdibasid-DB/character_-arm-wave`
+- Video: record the animation in the N8RO GLB viewer and share the video link in the submission email
