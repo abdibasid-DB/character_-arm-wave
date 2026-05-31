@@ -1,4 +1,4 @@
-# Character Plugin 210201993
+# N8RO Character Plugin 210201993
 
 This is an N8RO character animation project.
 
@@ -17,6 +17,8 @@ The selected states are:
 5. Fingers Open One by One
 
 The character first walks in place, then stops. After stopping, the arms extend into a clear pose. One arm is forward and one arm is backward. Then the fingers close one by one and open one by one.
+
+In short, the model implements walking, stopping, arm extension, and finger motion. The character transitions from walking to a standing pose, extends the arms, closes the fingers one by one, and opens the fingers one by one.
 
 ## Selected 10 Hand Joint Controls
 
@@ -74,6 +76,28 @@ x64\Release\character_plugin_210201993.dll
 
 Note: this folder keeps the original starter/plugin project structure. The final visible animation for this submission is the GLB model in the `assets` folder.
 
+## Load In N8RO
+
+Open the N8RO GLB viewer and load:
+
+```text
+assets\human_model_nathan_walk_stop_fingers_210201993.glb
+```
+
+The submitted Release x64 DLL is included in:
+
+```text
+x64\Release\character_plugin_210201993.dll
+```
+
+## How It Works
+
+The project uses the provided `ICharacterController` interface. The plugin writes 10 hand joint rotation values through `out_overrides[10]`.
+
+The finger values are blended smoothly to close and open the fingers one by one. The GLB model also contains the walking, stopping, and arm movement. The body motion uses the existing character skeleton, including the hip, legs, feet, spine, shoulders, arms, and hands.
+
+The project uses direct joint rotation control. It does not use PD forces or a physics simulation.
+
 ## Final GLB Model
 
 The final animated model is:
@@ -99,4 +123,4 @@ The video should clearly show:
 - Source/project files: included in this repository
 - Final GLB model: `assets\human_model_nathan_walk_stop_fingers_210201993.glb`
 - Public repository: `https://github.com/abdibasid-DB/character_-arm-wave`
-- Video: record the animation in the N8RO GLB viewer and share the video link in the submission email
+- Video: https://drive.google.com/file/d/1oiD7dW4kdMTdFpXi9c_Gff_2tFqQ-ZcD/view?usp=sharing
