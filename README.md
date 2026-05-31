@@ -91,6 +91,5 @@ The video should clearly show:
 - Source/project files: included in this repository
 - Final GLB model: `assets\human_model_nathan_walk_stop_fingers_210201993.glb`
 - Generation script: `tools\write_walk_stop_finger_sequence_glb.js`
-- Email template: `SUBMISSION_EMAIL.txt`
 - Public repository: `https://github.com/abdibasid-DB/character_-arm-wave`
 - Video: record the animation in the N8RO GLB viewer and share the video link in the submission email
